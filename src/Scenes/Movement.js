@@ -1,7 +1,7 @@
 class Movement extends Phaser.Scene {
     constructor() {
         super("movementScene");
-        this.my = {sprite: {}, enemies: []};  // Create an object to hold sprite bindings
+        this.my = {sprite: {}, enemies: []};  
 
         this.bodyX = 400;
         this.bodyY = 550;
@@ -14,12 +14,12 @@ class Movement extends Phaser.Scene {
         this.rKey = null;
 
         this.speedEnemy = 50;
-        this.direction = 1;  // 1 for right, -1 for left
+        this.direction = 1;  
         this.dropDistance = 20;
         this.gameOver = false;
     }
 
-    // Use preload to load art and sound assets before the scene starts running.
+    
     preload() {
         // Assets from Kenny Assets pack "Shape Characters"
         // https://kenney.nl/assets/shape-characters
@@ -34,7 +34,7 @@ class Movement extends Phaser.Scene {
     }
 
     create() {
-        let my = this.my;   // create an alias to this.my for readability
+        let my = this.my;   
 
         my.sprite.character = this.physics.add.sprite(this.bodyX, this.bodyY, "character").setScale(0.5);
         my.sprite.bullet = this.add.sprite(this.bodyX, this.bulletY, "bullet").setScale(0.5);
@@ -55,7 +55,7 @@ class Movement extends Phaser.Scene {
         this.physics.add.collider(this.bullets, this.enemies, this.handleBulletCollision, null, this);
         this.physics.add.collider(this.enemies, my.sprite.character, this.handleEnemyCollision, null, this);
 
-        // Set up the timed event to move the enemies
+        
         this.time.addEvent({
             delay: 1000,
             callback: this.moveEnemies,
@@ -75,7 +75,7 @@ class Movement extends Phaser.Scene {
     }
 
     update() {
-        let my = this.my;    // create an alias to this.my for readability
+        let my = this.my;   
     
         if (my.sprite.character.x > 0) {
             if (this.aKey.isDown) {
@@ -91,10 +91,10 @@ class Movement extends Phaser.Scene {
             let bullet = this.physics.add.sprite(my.sprite.character.x, my.sprite.character.y, "bullet").setScale(0.5);
             bullet.rotation = 300;
             this.bullets.add(bullet);
-            bullet.setVelocityY(-300); // Set bullet speed
+            bullet.setVelocityY(-300); 
         }
     
-        // Update bullets to move upwards
+        
         this.bullets.children.iterate((bullet) => {
             if (bullet.y < 0) {
                 bullet.destroy();
@@ -110,7 +110,7 @@ class Movement extends Phaser.Scene {
         const rows = 6;
         const cols = 6;
         const offsetX = 50;
-        const offsetY = -80;  // Start off-screen
+        const offsetY = -80;  
         const spacingX = 80;
         const spacingY = 60;
 
@@ -120,7 +120,7 @@ class Movement extends Phaser.Scene {
             for (let col = 0; col < cols; col++) {
                 let enemyX = offsetX + col * spacingX;
                 let enemyY = offsetY + row * spacingY;
-                let enemyType = Phaser.Math.RND.pick(enemyTypes);  // Randomly pick an enemy type
+                let enemyType = Phaser.Math.RND.pick(enemyTypes);  
                 let enemy = this.physics.add.sprite(enemyX, enemyY, enemyType).setScale(0.5);
                 this.enemies.add(enemy);
             }
@@ -128,7 +128,7 @@ class Movement extends Phaser.Scene {
     }
 
     moveEnemies() {
-        // Determine if enemies need to change direction
+        
         let changeDirection = false;
 
         this.enemies.children.iterate((enemy) => {
@@ -139,14 +139,14 @@ class Movement extends Phaser.Scene {
             }
         });
 
-        // Change direction and drop down
+        
         if (changeDirection) {
             this.direction *= -1;
             this.enemies.children.iterate((enemy) => {
                 enemy.y += this.dropDistance;
             });
         } else {
-            // Move enemies horizontally
+            
             this.enemies.children.iterate((enemy) => {
                 enemy.x += this.direction * this.speedEnemy;
             });
@@ -169,13 +169,12 @@ class Movement extends Phaser.Scene {
     }
 
     endGame(message) {
-        // Add end game logic here (e.g., display a message, stop the game, etc.)
+        
         this.endGameText.setText(message);
         this.restartText.setText('Press R to restart');
         this.endGameText.visible = true;
         this.restartText.visible = true;
         this.physics.pause();
-        this.input.keyboard.enabled = false;
         this.gameOver = true;
     }
 
@@ -185,6 +184,5 @@ class Movement extends Phaser.Scene {
         this.endGameText.visible = false;
         this.restartText.visible = false;
         this.physics.resume();
-        this.input.keyboard.enabled = true;
     }
 }
