@@ -1,2 +1,2 @@
-# 1-D-Movement
-# Class assignment for CMPM 120 where we explore 1D movement
+# Game 2B
+# Simple Gallery Shooter Game - Armaan Ahmed
